@@ -146,4 +146,6 @@ router.get('/user/:id/approve', async (req, res, next) => {
 
 router.use('/donations', require('./donations'));
 
+router.use('/backup', require('./backup'));
+
 module.exports = router;

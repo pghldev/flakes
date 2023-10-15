@@ -1,0 +1,43 @@
+extends backup
+
+block backup_breadcrumb
+  li.breadcrumb-item
+    a(href=baseUrl + "/home/backup") Backup
+  li.breadcrumb-item.active(aria-current="page") Restore
+
+block backupcontent
+  .container
+    .row
+      .col-12
+        div.jumbotron
+          p.lead.
+            Restore data for backup
+          hr.m-y-md
+          p
+            span.badge.rounded-pill.text-bg-danger.badge-danger.me-2.mr-2 Danger
+            .
+              This will cause the backup to replace the data in the system.
+          p.
+            Take a backup before restoring one.
+
+          hr.m-y-md
+          form(action="post")
+            .form-group.custom-file
+              .div
+                small.form-text.text-muted(id="restore-backup-file-input-help").
+                  Select the file you want to read the backup from.
+                .div.d-flex
+                  label.me-2.mr-2(for="restore-backup-file-input") Select backup file:
+                  input.form-control-file(
+                    type="file"
+                    id="restore-backup-file-input"
+                    aria-describedby="restore-backup-file-input-help"
+                    placeholder="Enter email")
+
+              //<div class="custom-file">
+              //<input type="file" class="custom-file-input" id="customFile">
+              //<label class="custom-file-label" for="customFile">Choose file</label>
+              //</div>
+
+              button.btn.btn-danger.btn-lg(type="submit").
+                Replace data with backup

@@ -44,6 +44,7 @@ async function login(req, res, next) {
     req.session.user = user;
     if (req.session.destination) {
       res.redirect(req.session.destination);
+      delete req.session.destination;
     } else {
       res.redirect(req.app.locals.baseUrl + '/home');
     }

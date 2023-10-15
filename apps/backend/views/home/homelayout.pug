@@ -21,6 +21,10 @@ block content
         <li class="#{settingsclass}">
           <a class="nav-link" href="#{baseUrl}/home/settings">Settings</a>
         </li>
+        - var backupclass = url === '/backup' ? 'nav-item active' : 'nav-item'
+        <li class="#{backupclass}">
+          <a class="nav-link" href="#{baseUrl}/home/backup">Backup</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Donations</a>
           <div class="dropdown-menu" aria-labelledby="dropdown01">

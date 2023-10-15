@@ -1,0 +1,28 @@
+extends backup
+
+block backup_breadcrumb
+  li.breadcrumb-item.active(aria-current="page") Backup
+  li.breadcrumb-item
+    a(href=baseUrl + "/home/backup/restore") Restore
+
+
+block backupcontent
+  .container
+    .row
+      .col-12
+
+        div.jumbotron
+          p.lead.
+            Export data for backup
+          hr.m-y-md
+          p.lead
+            a.btn.btn-success.btn-lg(href=baseUrl + "/home/backup/donations.csv").
+              Get all Donations
+          p.lead
+            a.btn.btn-success.btn-lg(href=baseUrl + "/home/backup/donations.csv?download=true").
+              Download all Donations
+
+          hr.m-y-md
+          p.lead
+            a.btn.btn-warning.btn-lg(href=baseUrl + "/home/backup/restore/").
+              Restore Donations
