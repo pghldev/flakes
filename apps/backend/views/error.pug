@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .container.mt-5
+    .row
+      .col-12
+        h1= message
+        h2= error.status
+        if error.extra
+          pre= error.extra
+        pre= error.stack
+        hr
+        a(href=back) Go Back

@@ -1,0 +1,43 @@
+extends authlayout
+
+block authcontent
+  <form class="form-signin" method="post">
+    .text-center.mb-3
+      <h2 class="form-signin-heading">Sign in</h2>
+    .text-center.mb-3
+      <h6>to continue to: #{title}</h6>
+
+    .
+      <label for="username" class="sr-only">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        class="mb-2 form-control form-control-sm"
+        placeholder="Username or Email address" required autofocus>
+
+      <label for="password" class="sr-only">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="mb-2 form-control form-control-sm"
+        placeholder="Password" required>
+
+    <div class="checkbox mt-2">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  </form>
+
+  div.mb-5
+    <button type="button" class="btn btn-link btn-sm float-left">Forgot Password?</button>
+    <a href="#{baseUrl}/signup" role="button" class="btn btn-link btn-sm float-right">Create Account</a>
+  //- p.text-muted.text-center Or login with:
+
+  each msg in login
+    <div class="alert alert-danger" role="alert">
+      <strong>#{msg.title}</strong> #{msg.msg}
+    </div>

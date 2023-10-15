@@ -1,0 +1,60 @@
+extends homelayout
+
+block homecontent
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        h2 Users
+        p Shows all users, approves/disapproves, reset password, delete
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            each user in users
+              li.list-group-item
+                span(style="display:inline-block;width:70%")
+                  p.cart-text.m-0.p-0
+                    b Username: 
+                    a(href=baseUrl+'/home/user/'+user.id) #{user.username}
+
+                  if user.email
+                    p.small.cart-text.m-0.p-0
+                      //- b Email: 
+                      span #{user.email}
+
+                  form.mt-2.d-md-inline-block.d-none.w-100(method="post", action=baseUrl+'/home/user/'+user.id+'/changepassword')
+                    <div class="form-group row">
+                      .col-sm-10
+                        <input type="password" class="form-control form-control-sm" name="password" placeholder="New Password">
+                      .col-sm-2
+                        <button type="submit" class="btn btn-light btn-sm">Change</button>
+                    </div>
+
+                span(style="display:inline-block;width:30%")
+                  a.pull-right.btn.btn-danger.btn-sm(href=baseUrl+'/home/user/'+user.id+'/delete')
+                    i.fa.fa-lg.fa-trash-o
+                  if user.approved
+                    a.pull-right.btn.btn-warning.btn-sm.mr-3(href=baseUrl+'/home/user/'+user.id+'/approve')
+                      i.fa.fa-lg.fa-lock
+                  else
+                    a.pull-right.btn.btn-success.btn-sm.mr-3(href=baseUrl+'/home/user/'+user.id+'/approve')
+                      i.fa.fa-lg.fa-unlock
+          </ul>
+        </div>
+      </div>
+      //- <div class="col-md-4">
+      //-   <h2>Heading</h2>
+      //-   p.
+      //-     Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
+      //-     tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+      //-     fermentum massa justo sit amet risus. Etiam porta sem malesuada
+      //-     magna mollis euismod. Donec sed odio dui.
+      //-   p.
+      //-     <a class="btn btn-secondary" href="#" role="button">
+      //-       View details &raquo;
+      //-     </a>
+      //- </div>
+    </div>
+  </div>

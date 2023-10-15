@@ -1,0 +1,113 @@
+extends homelayout
+
+block homecontent
+  .container
+    .row
+      .col-12
+
+        div.jumbotron
+          p.lead
+          hr.m-y-md
+          p.
+            Here are the donations
+          p.lead
+            <a class="btn btn-info btn-lg" href="#{baseUrl}/home/donations/new" role="button">Get New</a>
+            <a class="btn btn-success btn-lg" href="#{baseUrl}/home/donations/create" role="button">Create New Donation</a>
+
+    .row
+      .col-12
+        each msg in view
+          if msg.title === 'Error'
+            <div class="alert alert-danger" role="alert">
+              <strong>#{msg.title}</strong> #{msg.msg}
+            </div>
+          else
+            <div class="alert alert-info" role="alert">
+              <strong>#{msg.title}</strong> #{msg.msg}
+            </div>
+
+    .row.mb-3
+      .col-12
+        span.mr-3= page == -1 ? 'All donations' : 'Page ' + page
+        if page && page == -1
+          a.btn.btn-outline-info(href=baseUrl + '/home/donations/view?page=0', role="button") First
+        else
+          a.btn.btn-info(href=baseUrl + '/home/donations/view?page=-1', role="button") See All
+
+        a.ml-3.float-right.btn.btn-dark(href=baseUrl + '/home/donations/view?page=' + (parseInt(page, 10) + 1), role="button") Next
+        a.float-right.btn.btn-dark(href=baseUrl + '/home/donations/view?page=' + (parseInt(page, 10) - 1), role="button") Prev
+        a.mr-3.float-right.btn.btn-link(href=baseUrl + '/home/donations/backup', role="button") Backup
+    .row.mb-3
+      .col-12
+    .row
+      .col-12
+        if donations && donations.length
+          <table class="table table-striped table-inverse table-hover">
+            <thead>
+              tr
+                th id
+                th.d-table-cell.d-md-none Deets
+
+                th.d-none.d-md-table-cell Name
+                th.d-none.d-md-table-cell Date
+                th.d-none.d-md-table-cell Amount
+                th.d-none.d-md-table-cell Approved
+
+                th(style="width:50%") comment
+            </thead>
+            <tbody>
+              each donation in donations
+                form(method="post", action=baseUrl + '/home/donations/donation/' + donation.id + '/comment')
+                  <tr>
+                    td #{donation.id}
+                    td.d-table-cell.d-md-none
+                      a(href=baseUrl+'/home/donations/donation/' + donation.id)
+                        span #{donation.name} gave $#{donation.amount} on #{donation.when_full}
+                      span.d-table-cell.d-md-none
+                        if donation.approved
+                          <a href='#{baseUrl}/home/donations/donation/#{donation.id}/approval' role="button" class="btn btn-dark btn-sm">Hide</a>
+                        else
+                          <a href='#{baseUrl}/home/donations/donation/#{donation.id}/approval' role="button" class="btn btn-success btn-sm">Show</a>
+
+                    td.d-none.d-md-table-cell #{donation.name}
+                    td.d-none.d-md-table-cell(title=donation.when_full)
+                      a(href=baseUrl+'/home/donations/donation/' + donation.id) #{donation.when}
+                    td.d-none.d-md-table-cell $#{donation.amount}
+                    td.d-none.d-md-table-cell
+                      if donation.approved
+                        <a href='#{baseUrl}/home/donations/donation/#{donation.id}/approval' role="button" class="btn btn-dark btn-sm">Hide</a>
+                      else
+                        <a href='#{baseUrl}/home/donations/donation/#{donation.id}/approval' role="button" class="btn btn-success btn-sm">Show</a>
+
+                    //- td.d-none.d-md-table-cell
+                    //-   <textarea name="comment2" id="" cols="40" rows="3">#{donation.comment}</textarea>
+                    //- td.d-table-cell.d-md-none
+                    //-   <textarea name="comment1" id="" cols="40" rows="3">#{donation.comment}</textarea>
+                    td
+                      div
+                        <textarea class="form-control w-100" rows="4" name="comment">#{donation.comment}</textarea>
+                      div
+                        <button type="submit" class="btn btn-success btn-sm float-right">
+                          <i class="fa fa-lg fa-save"></i>
+                        </button>
+
+                  </tr>
+            </tbody>
+          </table>
+        else
+          p There are no donations yet.
+          //- <div class="card text-center">
+          //-   <div class="card-body">
+          //-     <h4 class="card-title"></h4>
+          //-     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          //-   </div>
+          //-   <ul class="list-group list-group-flush">
+          //-     <li class="list-group-item">Cras justo odio</li>
+          //-     <li class="list-group-item">Dapibus ac facilisis in</li>
+          //-     <li class="list-group-item">Vestibulum at eros</li>
+          //-   </ul>
+          //-   <div class="card-body">
+          //-     <a href="#" class="card-link">Card link</a>
+          //-     <a href="#" class="card-link">Another link</a>
+          //-   </div>
+          //- </div>

@@ -1,0 +1,51 @@
+extends homelayout
+
+block homecontent
+  //- <ddMain jumbotron for a primary marketing message or call to action -->
+  .jumbotron
+    if session && session.user && session.user.username
+      h1.display-3 Welcome back, #{session.user.username}!
+    else
+      h1.display-3 Welcome back!
+
+  <div class="container">
+    //- <ddExample row of columns -->
+    <div class="row">
+    </div>
+    .row
+      .col-md-4
+        .text-center #[span(style="font-size:3em;") #[i.fa.fa-lg.fa-cog]]
+        h2 Setup
+        p.
+          If you're reading this, you've already done this. Maybe you want to
+          add some additional users to let the team help you with managing it.
+        p
+          a.btn.btn-secondary(href=baseUrl + '/home/users', role='button').
+            View users &raquo;
+      .col-md-4
+        .text-center #[span(style="font-size:3em;") #[i.fa.fa-lg.fa-sliders]]
+        h2 Configuration
+        p.
+          This happens in the settings tab. You'll need your paypal account
+          for this step, and you can test if its successful by checking for
+          new donations.
+        p
+          a.btn.btn-secondary(href=baseUrl + '/home/settings', role='button').
+            View settings &raquo;
+      .col-md-4
+        .text-center #[span(style="font-size:3em;") #[i.fa.fa-lg.fa-play]]
+        h2 Integration
+        p.
+          After editing and approving donations, its time to copy the script
+          from the settings page into a webpage and watch the snowflakes
+          appear.
+        p
+          a.btn.btn-secondary(href=baseUrl + '/home/donations/view', role='button').
+            View donations &raquo;
+
+    <hr>
+
+    <footer>
+      <p>Made</p>
+    </footer>
+  </div>

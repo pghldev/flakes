@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#{baseUrl}/home"><i class="fa fa-lg fa-snowflake-o"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        - var homeclass = url === '/' ? 'nav-item active' : 'nav-item'
+        <li class="#{homeclass}">
+          <a class="nav-link" href="#{baseUrl}/home">Home <span class="sr-only">(#{url})</span></a>
+        </li>
+        - var usersclass = url === '/users' ? 'nav-item active' : 'nav-item'
+        <li class="#{usersclass}">
+          <a class="nav-link" href="#{baseUrl}/home/users">Users</a>
+        </li>
+        - var settingsclass = url === '/settings' ? 'nav-item active' : 'nav-item'
+        <li class="#{settingsclass}">
+          <a class="nav-link" href="#{baseUrl}/home/settings">Settings</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Donations</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="dropdown-item" href="#{baseUrl}/home/donations/new">New Donations</a>
+            <a class="dropdown-item" href="#{baseUrl}/home/donations/view">View Donations</a>
+            //- <a class="dropdown-item" href="#{baseUrl}/home/">Something else here</a>
+          </div>
+        </li>
+      </ul>
+      <a href="#{baseUrl}/logout" class="btn btn-outline-success" href="#" role="button">Logout</a>
+      //- <button type="button" class="btn btn-link btn-outline-success">Link</button>
+      //- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </div>
+  </nav>
+
+  div(style="height:56px !important;")
+  
+  block homecontent

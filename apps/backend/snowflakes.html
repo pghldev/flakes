@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Snowflakes</title>
+
+    <!-- Pretty fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet'>
+  
+  
+    <script src="//d3js.org/d3.v5.min.js"></script>
+  
+    
+  </head>
+  <body>
+  <div>
+    <svg width=400 height=400>
+      <text x='20' y='20' font-family='Open Sans' font-weight='300' font-size='18px'></text>
+    </svg>
+    
+  </div>
+  
+  </body>
+</html>
+
+<script>
+
+  let svgWidth = window.innerWidth;
+  let svgHeight = window.innerHeight;
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ )
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+
+    return result;
+  }
+  
+  function transformUpdate(d) {
+    d.rotation = d.rotation + d.rotationAmt;
+    return `translate(-${sizeScale(d.amount)/2},-${sizeScale(d.amount)/2}) rotate(${d.rotation}, ${d.x}, ${d.y})`
+  }
+  
+  let data = [...Array(100)].map(function (d,i) {
+    return {'name': makeid(getRandomInt(10) + 5), 'amount': getRandomInt(100) + 1};
+  }).map(function(d) {
+    d['x'] = Math.random()*svgWidth;
+    d['y'] = -Math.random()*svgHeight;
+    d['rotation'] = Math.random()*360;
+    d['rotationAmt'] = Math.random()*0.5;
+    return d;
+  });
+  
+  let sizeScale = d3.scaleLinear()
+    .domain([1, 101])
+    .rangeRound([10, 50]);
+  
+  let weightScale = d3.scaleLinear()
+    .domain([1, 101])
+    .range([0.0001, 0.0002]);
+  
+  d3.select('svg')
+    .attr('width', svgWidth)
+    .attr('height', svgHeight)
+    .selectAll('image')
+    .data(data)
+    .enter()
+      .append('image')
+      .attr('xlink:href', './snowflake.png')
+      .attr('width', d => sizeScale(d.amount))
+      .attr('height', d => sizeScale(d.amount))
+      .attr('transform', d => transformUpdate(d))
+      .on('mouseover', function (d) {
+
+        let donation = d3.select(this).data()[0];
+        d3.select('text')
+          .text(donation.name + ': $'+donation.amount);
+      })
+
+  
+  let gravityForce = d3.forceY()
+    .strength(d => weightScale(d.amount))
+    .y(d => svgHeight-sizeScale(d.amount)/2);
+      
+  let collisionForce = d3.forceCollide()
+    .radius(d => sizeScale(d.amount)/2)
+  
+  d3.forceSimulation(data)
+    .velocityDecay(0.1)
+    .alphaDecay(0)
+    .force('gravity', gravityForce)
+    .force('collide', collisionForce)
+    .on('tick', function() {
+        d3.selectAll('image')
+          .attr('x', d => d.x)
+          .attr('y', d => d.y)
+          .attr('transform', d => transformUpdate(d));
+      });
+      
+
+  
+  console.log(data); 
+  
+  
+</script>
