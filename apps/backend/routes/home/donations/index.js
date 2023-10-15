@@ -195,6 +195,7 @@ router.post('/donation/:id', async (req, res, next) => {
   var { id } = req.params;
   if (id) {
     var { name, date, amount, approved, comment } = req.body;
+    approved = approved === 'on';
     try {
       var when = moment(date, 'Y-MM-DD', true).toDate();
     } catch (e) {

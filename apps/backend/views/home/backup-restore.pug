@@ -21,7 +21,7 @@ block backupcontent
             Take a backup before restoring one.
 
           hr.m-y-md
-          form(method="post")
+          form(method="post" enctype="multipart/form-data")
             .form-group.custom-file
               .div
                 small.form-text.text-muted(id="restore-backup-file-input-help").

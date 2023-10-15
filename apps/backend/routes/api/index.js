@@ -10,7 +10,8 @@ async function validateToken(db, code) {
   return !!result;
 }
 
-var handler = async (req, res, next) => {
+var tokenMw = async (req, res, next) => {
+  if (req.session.user) return next();
   var { token } = req;
   if (!token)
     return res.status(400).json({ error: 'No Credentials' });
@@ -19,16 +20,21 @@ var handler = async (req, res, next) => {
   if (!validToken)
     return res.status(403).json({ error: 'Bad Credentials' });
 
+  next();
+};
+
+var handler = async (req, res, next) => {
   var donations = await req.db('donation')
     .select([ 'name', 'when', 'amount', 'comment' ])
-    .where({ approved: true });
+    .where({ approved: true })
+    .orderBy('id', 'desc');
 
   res.json({ donations });
 };
 
 router.use(cors());
-router.get('/donations', handler);
-router.post('/donations', handler);
+router.get('/donations', tokenMw, handler);
+router.post('/donations', tokenMw, handler);
 
 router.get('/script', async (req, res, next) => {
   var baseUrl = req.app.locals.baseUrl;

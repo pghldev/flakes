@@ -1,9 +1,11 @@
-require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+let path = require('path');
+
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 
 var knexConfiguration = {
   client: 'sqlite3',
-  connection: 'database.db',
+  connection: process.env.SQLITE_CONNECTION || path.join(__dirname, 'database.db'),
   useNullAsDefault: true
   // client: 'mysql',
   // connection: {
@@ -13,16 +15,16 @@ var knexConfiguration = {
   // }
 };
 
-if (process.env.HEROKU)
+if (process.env.MYSQL_CONNECTION)
   knexConfiguration = {
     client: 'mysql',
-    connection: process.env.CLEARDB_DATABASE_URL
+    connection: process.env.MYSQL_CONNECTION
   };
 
 
 module.exports = {
   baseUrl: '/snowflakes',
   title: process.env.TITLE || 'Flakes',
-  cookieSecret: process.env.HEROKU_SECRET || 'keyboards cat',
+  cookieSecret: process.env.COOKIE_SECRET || 'keyboards cat',
   knexConfiguration
 };

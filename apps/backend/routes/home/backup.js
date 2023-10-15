@@ -4,6 +4,9 @@ var router = express.Router();
 var { stringify } = require('csv-stringify');
 var { parse } = require('csv-parse');
 const stream = require("stream");
+const util = require("util");
+const multer = require("multer");
+const fs = require("fs");
 
 router.get('/', (req, res) => {
   res.render('home/backup-backup.pug')
@@ -14,24 +17,66 @@ router.get('/restore', (req, res) => {
   res.render('home/backup-restore.pug')
 });
 
-function streamerToDb(dbSaver) {
-  let buffer = []
-  
+var cbWritable = module.exports.cbWritable = function(dbSaver, limit = 200) {
+  let bufferedChunks = [];
   return new stream.Writable({
+    objectMode: true,
     write(chunk, encoding, callback) {
-      
-      callback();
+      if (bufferedChunks.length === limit) {
+        Promise.resolve(dbSaver(bufferedChunks))
+            .then(() => {
+              bufferedChunks = [];
+              callback();
+            });
+      } else {
+        bufferedChunks.push(chunk);
+        callback();
+      }
     },
-    writev(chunk, encoding, callback) {
-      this.push(chunk);
-      callback();
+    writev(chunk, callback) {
+      Promise.resolve(dbSaver(chunk)).then(() => callback());
+    },
+    final(callback) {
+      Promise.resolve(dbSaver(bufferedChunks)).then(() => callback());
     }
   });
 }
 
 // action
-router.post('/restore', (req, res) => {
-  req.stream().pipe(parse())
+let fileMw = multer({ dest: process.env.UPLOADS_DIRECTORY || '/tmp' }).single('file');
+router.post('/restore', fileMw, async (req, res, next) => {
+  /*
+    fieldname = "file"
+    originalname = "don.tsv"
+    encoding = "7bit"
+    mimetype = "text/tab-separated-values"
+    destination = "/tmp"
+    filename = "5d8078ecb6df6177599fcef857bcc074"
+    path = "/tmp/5d8078ecb6df6177599fcef857bcc074"
+    size = 9416
+   */
+  if (!req.file) return next(new Error("no file! please go back and try again with a file"));
+
+  try {
+    await req.db.del().from('donation');
+    await new Promise((r, j) => {
+      fs.createReadStream(req.file.path)
+          .pipe(parse({ fromLine: 2, columns: ["id", "name", "when", "amount", "approved", "comment"] }))
+          .pipe(cbWritable(async rows => {
+            await req.db('donation').insert(rows);
+            // console.log(rows)
+          }))
+          .on('close', () => {
+            res.send('done');
+            r()
+          })
+          .on('error', j);
+    })
+  } catch (e) {
+    next(e);
+  } finally {
+    await fs.promises.unlink(req.file.path);
+  }
 });
 
 router.get('/donations.csv', async (req, res) => {
