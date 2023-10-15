@@ -21,15 +21,18 @@ block backupcontent
             Take a backup before restoring one.
 
           hr.m-y-md
-          form(action="post")
+          form(method="post")
             .form-group.custom-file
               .div
                 small.form-text.text-muted(id="restore-backup-file-input-help").
                   Select the file you want to read the backup from.
                 .div.d-flex
                   label.me-2.mr-2(for="restore-backup-file-input") Select backup file:
-                  input.form-control-file(
+                  input.form-control-file.w-auto(
                     type="file"
+                    name="file"
+                    required
+                    accept=".csv,.tsv"
                     id="restore-backup-file-input"
                     aria-describedby="restore-backup-file-input-help"
                     placeholder="Enter email")
@@ -39,5 +42,5 @@ block backupcontent
               //<label class="custom-file-label" for="customFile">Choose file</label>
               //</div>
 
-              button.btn.btn-danger.btn-lg(type="submit").
+              button.btn.btn-danger.btn-lg.mt-2(type="submit").
                 Replace data with backup
