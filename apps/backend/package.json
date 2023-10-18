@@ -7,6 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon bin/www",
+    "docker:image": "node create-docker-image.js flakes-server",
+    "docker:run": "docker run --log-opt max-size=10m --log-opt max-file=10 --rm -it --name fs -p 3000:3000 flakes-server",
     "knex": "knex"
   },
   "author": "",
