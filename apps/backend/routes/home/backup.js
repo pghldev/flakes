@@ -86,6 +86,8 @@ router.get('/donations.csv', async (req, res) => {
   // @formatter:on
   if (isPreview)
     res.setHeader('content-disposition', 'inline; filename="donations.csv"');
+  else
+    res.setHeader('content-disposition', 'attachment; filename="donations.csv"');
   res.setHeader('content-type', 'text/plain');
   req.db.select('*').from('donation')
     .stream()
