@@ -11,6 +11,7 @@
    * system by Dave Ankin <daveankin@gmail.com>.
    * 
    * 2019
+   * 2023
    * 
    * EXTENDING THIS SCRIPT:
    * There are two sections you should copy over, and the CDN dependencies
@@ -46,6 +47,7 @@
     window.SNOWFLAKES = window.SNOWFLAKES || {};
     window.SNOWFLAKES.defaultDimensions = { width: 15, height: 100 };
     window.SNOWFLAKES.donationsUrl = '#{donationsUrl}';
+    window.SNOWFLAKES.code = `#{settings.code || ''}` || window.SNOWFLAKES.code;
 
     function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max));

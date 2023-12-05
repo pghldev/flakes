@@ -24,6 +24,7 @@ if (process.env.MYSQL_CONNECTION)
 
 module.exports = {
   baseUrl: '/snowflakes',
+  externalBaseUrl: process.env.EXTERNAL_BASE_URL || 'http://localhost:3000',
   title: process.env.TITLE || 'Flakes',
   cookieSecret: process.env.COOKIE_SECRET || 'keyboards cat',
   knexConfiguration
