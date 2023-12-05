@@ -4,6 +4,8 @@ var router = express.Router();
 var crypto = require('crypto');
 var bcrypt = require('bcryptjs');
 
+var config = require('../../config');
+
 async function genToken(bytes) {
   bytes = bytes || 48;
   return new Promise(function (resolve, reject) {
@@ -70,7 +72,8 @@ router.get('/users', async (req, res, next) => {
 router.get('/settings', async (req, res, next) => {
   var keys = await req.db('key').select('*');
   var settings = await req.db('setting').select('*');
-  var fullBase = 'https://' + req.get('host') + req.app.locals.baseUrl;
+  let base = config.externalBaseUrl || ('https://' + req.get('host'));
+  var fullBase = base + req.app.locals.baseUrl;
   res.render('home/settings', { keys, settings, fullBase });
 });
 
