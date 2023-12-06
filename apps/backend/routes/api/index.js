@@ -28,7 +28,9 @@ var handler = async (req, res, next) => {
   var donations = await req.db('donation')
     .select([ 'name', 'when', 'amount', 'comment' ])
     .where({ approved: true })
-    .orderBy('id', 'desc');
+    .orderBy('id', 'desc')
+    .limit(50)
+  ;
 
   res.json({ donations });
 };
