@@ -29,7 +29,7 @@ var handler = async (req, res, next) => {
     .select([ 'name', 'when', 'amount', 'comment' ])
     .where({ approved: true })
     .orderBy('id', 'desc')
-    .limit(50)
+    .limit(100)
   ;
 
   res.json({ donations });
