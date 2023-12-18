@@ -42,7 +42,7 @@ app.use(session({
   store: store,
   secret: config.cookieSecret,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   name: 'flakes'
 }));
 app.use(flash());
